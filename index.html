@@ -389,7 +389,7 @@
       * leaderDefMult * passADefMult * passBAllDefMult
       * otherDefMult * (1 + effDef123 / 100);
 
-    const mit = n('mitigation') / 100;
+    const mit = 1 - n('mitigation') / 100;
     const hasGuard = document.getElementById('allGuard').value === '1';
 
     function calcSeal(def) {
