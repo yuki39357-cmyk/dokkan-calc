@@ -64,9 +64,9 @@
     }
     select { text-align: center; cursor: pointer; }
 
-    /* ATK/DEF 色分け */
-    .ai { background: #fff5f5; border-color: #f5aaaa; } /* ATK input */
-    .di { background: #f0f5ff; border-color: #aaaaf5; } /* DEF input */
+    /* ATK/DEF 色分け（input[type="number"]より優先度を上げるためinput.ai形式に） */
+    input.ai, select.ai { background: #fff5f5; border-color: #f5aaaa; }
+    input.di, select.di { background: #f0f5ff; border-color: #aaaaf5; }
 
     .no-def {
       border: 1px solid #eee;
@@ -119,6 +119,11 @@
   <!-- 基礎 + リーダー -->
   <section>
     <h2>基礎ステータス・リーダースキル %</h2>
+    <div class="r2" style="margin-bottom:1px;">
+      <span></span>
+      <span style="font-size:0.68em;color:#c77;text-align:center;font-weight:bold;">ATK</span>
+      <span style="font-size:0.68em;color:#77c;text-align:center;font-weight:bold;">DEF</span>
+    </div>
     <div class="r2"><label>基礎</label>
       <input type="number" id="baseAtk" value="0" min="0" class="ai">
       <input type="number" id="baseDef" value="0" min="0" class="di">
@@ -187,7 +192,7 @@
       <input type="number" id="fieldAtk" value="0" class="ai">
       <input type="number" id="fieldDef" value="0" class="di">
     </div>
-    <div class="r2"><label>Sメモリー</label>
+    <div class="r2"><label>サポートメモリー</label>
       <input type="number" id="memAtk" value="0" class="ai">
       <input type="number" id="memDef" value="0" class="di">
     </div>
