@@ -84,14 +84,13 @@
     .eff-rows { flex: 1; }
     .r-eff {
       display: grid;
-      grid-template-columns: 14px 56px 11px 36px 56px;
+      grid-template-columns: 14px 56px 56px 36px;
       justify-content: end;
       align-items: center;
       gap: 3px;
       margin-bottom: 2px;
     }
     .r-eff label { font-size: 0.76em; text-align: center; }
-    .x-mark { text-align: center; font-size: 0.76em; color: #aaa; }
 
     button#resetBtn {
       display: block; width: 100%; margin-top: 8px;
@@ -232,35 +231,25 @@
         <div class="r-eff">
           <label>①</label>
           <input type="number" id="suprEff1Pct" value="0" min="0" class="ai">
-          <span class="x-mark">×</span>
-          <input type="number" id="suprEff1Cnt" value="1" min="0">
           <input type="number" id="suprEff1DefPct" value="0" min="0" class="di">
+          <input type="number" id="suprEff1Cnt" value="1" min="0">
         </div>
         <div class="r-eff">
           <label>②</label>
           <input type="number" id="suprEff2Pct" value="0" min="0" class="ai">
-          <span class="x-mark">×</span>
-          <input type="number" id="suprEff2Cnt" value="1" min="0">
           <input type="number" id="suprEff2DefPct" value="0" min="0" class="di">
+          <input type="number" id="suprEff2Cnt" value="1" min="0">
         </div>
         <div class="r-eff">
           <label>③</label>
           <input type="number" id="suprEff3Pct" value="0" min="0" class="ai">
-          <span class="x-mark" style="visibility:hidden">×</span>
-          <span class="no-def">—</span>
           <input type="number" id="suprEff3DefPct" value="0" min="0" class="di">
+          <span class="no-def">—</span>
         </div>
       </div>
     </div>
     <div class="r1"><label>必殺技威力UP</label>
       <input type="number" id="suprPower" value="0" class="ai">
-    </div>
-    <hr class="sep">
-    <div class="r1"><label>軽減率 %</label>
-      <input type="number" id="mitigation" value="0" min="0" max="100">
-    </div>
-    <div class="r1"><label>全属性ガード %</label>
-      <input type="number" id="allGuard" value="0" min="0">
     </div>
   </section>
 
@@ -272,17 +261,24 @@
         <div class="result-value atk" id="resSuprAtk">---</div>
       </div>
       <div class="result-item">
-        <div class="result-label">完封ライン</div>
-        <div class="result-value def" id="resSealLine">---</div>
-      </div>
-      <div class="result-item">
         <div class="result-label">行動前DEF</div>
         <div class="result-value def" id="resEffDef">---</div>
       </div>
-      <div class="result-item">
+      <div class="result-item" style="grid-column: 1 / -1;">
         <div class="result-label">行動後DEF</div>
         <div class="result-value def" id="resAftDef">---</div>
       </div>
+    </div>
+    <hr class="sep" style="margin-top:6px;">
+    <div class="r1" style="margin-top:4px;"><label>軽減率 %</label>
+      <input type="number" id="mitigation" value="0" min="0" max="100">
+    </div>
+    <div class="r1"><label>全属性ガード %</label>
+      <input type="number" id="allGuard" value="0" min="0">
+    </div>
+    <div class="result-item" style="margin-top:5px;">
+      <div class="result-label">完封ライン</div>
+      <div class="result-value def" id="resSealLine">---</div>
     </div>
     <button id="resetBtn" onclick="resetAll()">リセット</button>
   </div>
