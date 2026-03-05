@@ -3,66 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ドッカンバトル ステータス計算機</title>
+  <title>ドッカンバトル 計算機</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f0f0f0;
       color: #222;
-      font-size: 14px;
-      padding: 8px;
+      font-size: 13px;
+      padding: 5px;
     }
-    h1 { text-align: center; font-size: 1.1em; padding: 5px 0 7px; color: #c00; }
-    .container { max-width: 960px; margin: 0 auto; }
-
-    .sections-grid { max-width: 480px; margin: 0 auto; }
+    h1 { text-align: center; font-size: 0.95em; padding: 3px 0 5px; color: #c00; font-weight: bold; }
+    .container { max-width: 480px; margin: 0 auto; }
 
     section {
       background: #fff;
-      border-radius: 6px;
-      padding: 7px 9px;
-      margin-bottom: 7px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      padding: 4px 7px 5px;
+      margin-bottom: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
     h2 {
-      font-size: 0.82em; font-weight: bold;
-      margin-bottom: 5px; padding-bottom: 3px;
-      border-bottom: 2px solid #e0e0e0; color: #333;
+      font-size: 0.75em; font-weight: bold;
+      margin-bottom: 3px; padding-bottom: 2px;
+      border-bottom: 1.5px solid #e0e0e0; color: #333;
     }
-    h3 { font-size: 0.7em; color: #aaa; margin: 5px 0 2px; }
+    .sep { border: none; border-top: 1px dashed #ddd; margin: 3px 0 3px; }
 
-    /* ATK/DEF列ヘッダー（3列） */
     .col-hd {
       display: grid;
-      grid-template-columns: 1fr 62px 62px;
+      grid-template-columns: 1fr 56px 56px;
       gap: 3px;
-      font-size: 0.68em;
+      font-size: 0.63em;
       color: #aaa;
       text-align: center;
       margin-bottom: 1px;
     }
-    .col-hd span:first-child { text-align: left; color: #888; font-size: 1em; }
+    .col-hd span:first-child { text-align: left; }
 
-    /* ATK + DEF 両方 */
     .r2 {
       display: grid;
-      grid-template-columns: 1fr 62px 62px;
+      grid-template-columns: 1fr 56px 56px;
       align-items: center;
       gap: 3px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
-    /* ATK のみ */
     .r1 {
       display: grid;
-      grid-template-columns: 1fr 62px;
+      grid-template-columns: 1fr 56px;
       align-items: center;
       gap: 3px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
-
     .r2 label, .r1 label {
-      font-size: 0.82em;
+      font-size: 0.76em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -70,10 +64,10 @@
 
     input[type="number"], select {
       width: 100%;
-      padding: 4px 4px;
+      padding: 2px 3px;
       border: 1px solid #ccc;
       border-radius: 3px;
-      font-size: 0.85em;
+      font-size: 0.8em;
       text-align: center;
       background: #fff;
       appearance: none;
@@ -82,61 +76,56 @@
     input[type="number"] { text-align: right; }
     select { cursor: pointer; }
 
-    /* DEFなし列のプレースホルダー */
     .no-def {
       border: 1px solid #eee;
       border-radius: 3px;
       background: #fafafa;
       color: #ccc;
-      font-size: 0.8em;
+      font-size: 0.75em;
       text-align: center;
-      padding: 4px 0;
-      line-height: 1;
+      padding: 2px 0;
     }
 
-    .btn-row { display: flex; gap: 7px; margin-bottom: 7px; }
-    button#calcBtn {
-      flex: 1; padding: 10px;
-      background: #c00; color: #fff; border: none;
-      border-radius: 6px; font-size: 1em; font-weight: bold;
-      cursor: pointer;
-    }
-    button#calcBtn:hover { background: #a00; }
-    button#resetBtn {
-      padding: 10px 14px;
-      background: #888; color: #fff; border: none;
-      border-radius: 6px; font-size: 0.9em; font-weight: bold;
-      cursor: pointer; white-space: nowrap;
-    }
-    button#resetBtn:hover { background: #555; }
-
-    /* 必殺技効果①②用（ATK% × 回数 DEF%） */
     .col-hd-eff {
       display: grid;
-      grid-template-columns: 1fr 50px 12px 36px 50px;
+      grid-template-columns: 14px 44px 11px 30px 44px;
       gap: 3px;
-      font-size: 0.68em;
+      font-size: 0.63em;
       color: #aaa;
       text-align: center;
       margin-bottom: 1px;
     }
-    .col-hd-eff span:first-child { text-align: left; }
     .r-eff {
       display: grid;
-      grid-template-columns: 1fr 50px 12px 36px 50px;
+      grid-template-columns: 14px 44px 11px 30px 44px;
       align-items: center;
       gap: 3px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
-    .r-eff label { font-size: 0.82em; white-space: nowrap; }
-    .x-mark { text-align: center; font-size: 0.82em; color: #aaa; }
+    .r-eff label { font-size: 0.76em; text-align: center; }
+    .x-mark { text-align: center; font-size: 0.76em; color: #aaa; }
 
-    #result { background: #fff; border-radius: 6px; padding: 9px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-    #result h2 { color: #c00; border-bottom-color: #c00; }
-    .result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 5px; }
-    @media (max-width: 400px) { .result-grid { grid-template-columns: 1fr; } }
-    .result-item { background: #f9f9f9; border-radius: 4px; padding: 6px 8px; }
-    .result-label { font-size: 0.72em; color: #777; margin-bottom: 2px; }
+    .btn-row { display: flex; gap: 6px; margin-bottom: 5px; }
+    button#calcBtn {
+      flex: 1; padding: 9px;
+      background: #c00; color: #fff; border: none;
+      border-radius: 5px; font-size: 0.95em; font-weight: bold;
+      cursor: pointer;
+    }
+    button#calcBtn:active { background: #a00; }
+    button#resetBtn {
+      padding: 9px 12px;
+      background: #888; color: #fff; border: none;
+      border-radius: 5px; font-size: 0.85em; font-weight: bold;
+      cursor: pointer; white-space: nowrap;
+    }
+    button#resetBtn:active { background: #555; }
+
+    #result { background: #fff; border-radius: 5px; padding: 5px 7px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+    #result h2 { color: #c00; border-bottom-color: #fcc; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px; }
+    .result-item { background: #f9f9f9; border-radius: 4px; padding: 4px 6px; }
+    .result-label { font-size: 0.65em; color: #777; margin-bottom: 1px; }
     .result-value { font-size: 1.15em; font-weight: bold; }
     .result-value.atk { color: #c00; }
     .result-value.def { color: #006cc7; }
@@ -144,228 +133,177 @@
 </head>
 <body>
 <div class="container">
-  <h1>ドッカンバトル ステータス計算機</h1>
+  <h1>ドッカンバトル 計算機</h1>
 
-  <div class="sections-grid">
+  <!-- 基礎 + リーダー -->
+  <section>
+    <h2>基礎ステータス・リーダースキル %</h2>
+    <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
+    <div class="r2"><label>基礎</label>
+      <input type="number" id="baseAtk" value="0" min="0">
+      <input type="number" id="baseDef" value="0" min="0">
+    </div>
+    <div class="r2"><label>潜在</label>
+      <input type="number" id="potAtk" value="0" min="0">
+      <input type="number" id="potDef" value="0" min="0">
+    </div>
+    <div class="r2"><label>スキル玉 %</label>
+      <input type="number" id="ballAtk" value="0" min="0">
+      <input type="number" id="ballDef" value="0" min="0">
+    </div>
+    <hr class="sep">
+    <div class="r2"><label>自リーダー</label>
+      <select id="leaderAtk"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+      <select id="leaderDef"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+    </div>
+    <div class="r2"><label>フレンド</label>
+      <select id="friendAtk"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+      <select id="friendDef"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+    </div>
+  </section>
 
-      <!-- ①基礎 -->
-      <section>
-        <h2>① 基礎ステータス</h2>
-        <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
-        <div class="r2">
-          <label>基礎</label>
-          <input type="number" id="baseAtk" value="0" min="0">
-          <input type="number" id="baseDef" value="0" min="0">
-        </div>
-        <div class="r2">
-          <label>潜在</label>
-          <input type="number" id="potAtk" value="0" min="0">
-          <input type="number" id="potDef" value="0" min="0">
-        </div>
-        <div class="r2">
-          <label>スキル玉 %</label>
-          <input type="number" id="ballAtk" value="0" min="0">
-          <input type="number" id="ballDef" value="0" min="0">
-        </div>
-      </section>
+  <!-- パッシブ -->
+  <section>
+    <h2>パッシブ %</h2>
+    <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
+    <div class="r2"><label>A①</label>
+      <input type="number" id="passA1Atk" value="0">
+      <input type="number" id="passA1Def" value="0">
+    </div>
+    <div class="r2"><label>A②</label>
+      <input type="number" id="passA2Atk" value="0">
+      <input type="number" id="passA2Def" value="0">
+    </div>
+    <div class="r2"><label>サポート</label>
+      <input type="number" id="suppAtk" value="0">
+      <input type="number" id="suppDef" value="0">
+    </div>
+    <hr class="sep">
+    <div class="r2"><label>被弾時</label>
+      <input type="number" id="hitAtk" value="0">
+      <input type="number" id="hitDef" value="0">
+    </div>
+    <div class="r2"><label>B①</label>
+      <input type="number" id="passBAtk1" value="0">
+      <input type="number" id="passBDef1" value="0">
+    </div>
+    <div class="r2"><label>B②</label>
+      <input type="number" id="passBAtk2" value="0">
+      <input type="number" id="passBDef2" value="0">
+    </div>
+  </section>
 
-      <!-- ②リーダー -->
-      <section>
-        <h2>② リーダースキル %</h2>
-        <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
-        <div class="r2">
-          <label>自リーダー</label>
-          <select id="leaderAtk">
-            <option value="220" selected>220</option>
-            <option value="200">200</option>
-            <option value="170">170</option>
-          </select>
-          <select id="leaderDef">
-            <option value="220" selected>220</option>
-            <option value="200">200</option>
-            <option value="170">170</option>
-          </select>
-        </div>
-        <div class="r2">
-          <label>フレンド</label>
-          <select id="friendAtk">
-            <option value="220" selected>220</option>
-            <option value="200">200</option>
-            <option value="170">170</option>
-          </select>
-          <select id="friendDef">
-            <option value="220" selected>220</option>
-            <option value="200">200</option>
-            <option value="170">170</option>
-          </select>
-        </div>
-      </section>
+  <!-- その他補正 -->
+  <section>
+    <h2>その他補正 %</h2>
+    <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
+    <div class="r2"><label>リンク</label>
+      <input type="number" id="linkAtk" value="0">
+      <input type="number" id="linkDef" value="0">
+    </div>
+    <div class="r2"><label>アクティブ</label>
+      <input type="number" id="activeAtk" value="0">
+      <input type="number" id="activeDef" value="0">
+    </div>
+    <div class="r2"><label>フィールド</label>
+      <input type="number" id="fieldAtk" value="0">
+      <input type="number" id="fieldDef" value="0">
+    </div>
+    <div class="r2"><label>Sメモリー</label>
+      <input type="number" id="memAtk" value="0">
+      <input type="number" id="memDef" value="0">
+    </div>
+    <div class="r2"><label>アイテム</label>
+      <input type="number" id="itemAtk" value="0">
+      <input type="number" id="itemDef" value="0">
+    </div>
+  </section>
 
-      <!-- ③パッシブ -->
-      <section>
-        <h2>③ パッシブ %</h2>
-        <h3>A・サポート（加算）</h3>
-        <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
-        <div class="r2">
-          <label>A①</label>
-          <input type="number" id="passA1Atk" value="0">
-          <input type="number" id="passA1Def" value="0">
-        </div>
-        <div class="r2">
-          <label>A②</label>
-          <input type="number" id="passA2Atk" value="0">
-          <input type="number" id="passA2Def" value="0">
-        </div>
-        <div class="r2">
-          <label>サポート</label>
-          <input type="number" id="suppAtk" value="0">
-          <input type="number" id="suppDef" value="0">
-        </div>
-        <h3>B（加算、DEFは被弾時のみ）</h3>
-        <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
-        <div class="r2">
-          <label>被弾時</label>
-          <input type="number" id="hitAtk" value="0">
-          <input type="number" id="hitDef" value="0">
-        </div>
-        <div class="r2">
-          <label>B①</label>
-          <input type="number" id="passBAtk1" value="0">
-          <input type="number" id="passBDef1" value="0">
-        </div>
-        <div class="r2">
-          <label>B②</label>
-          <input type="number" id="passBAtk2" value="0">
-          <input type="number" id="passBDef2" value="0">
-        </div>
-      </section>
+  <!-- 必殺技 + DEF関連 -->
+  <section>
+    <h2>必殺技・DEF関連</h2>
+    <div class="r1"><label>気力補正</label>
+      <select id="kiBonus">
+        <option value="2" selected>×2.0</option>
+        <option value="1.8">×1.8</option>
+        <option value="1.7">×1.7</option>
+        <option value="1.6">×1.6</option>
+        <option value="1.5">×1.5</option>
+      </select>
+    </div>
+    <div class="r1"><label>必殺技倍率</label>
+      <select id="suprRate">
+        <option value="8.4">8.4 究極lv20</option>
+        <option value="6.3">6.3 超絶特大lv15</option>
+        <option value="6.2">6.2 超極大lv25</option>
+        <option value="5.7" selected>5.7 超極大lv20</option>
+        <option value="5.05">5.05 超絶特大lv10</option>
+        <option value="4.5">4.5 極大lv25</option>
+        <option value="4.25">4.25 極大lv20</option>
+      </select>
+    </div>
+    <hr class="sep">
+    <div class="col-hd-eff"><span></span><span>ATK%</span><span></span><span>回数</span><span>DEF%</span></div>
+    <div class="r-eff">
+      <label>①</label>
+      <input type="number" id="suprEff1Pct" value="0" min="0">
+      <span class="x-mark">×</span>
+      <input type="number" id="suprEff1Cnt" value="1" min="0">
+      <input type="number" id="suprEff1DefPct" value="0" min="0">
+    </div>
+    <div class="r-eff">
+      <label>②</label>
+      <input type="number" id="suprEff2Pct" value="0" min="0">
+      <span class="x-mark">×</span>
+      <input type="number" id="suprEff2Cnt" value="1" min="0">
+      <input type="number" id="suprEff2DefPct" value="0" min="0">
+    </div>
+    <div class="r-eff">
+      <label>③</label>
+      <input type="number" id="suprEff3Pct" value="0" min="0">
+      <span class="x-mark" style="visibility:hidden">×</span>
+      <span class="no-def">—</span>
+      <input type="number" id="suprEff3DefPct" value="0" min="0">
+    </div>
+    <div class="r1"><label>必殺技威力 %</label>
+      <input type="number" id="suprPower" value="0">
+    </div>
+    <hr class="sep">
+    <div class="r1"><label>軽減率 %</label>
+      <input type="number" id="mitigation" value="0" min="0" max="100">
+    </div>
+    <div class="r1"><label>全属性ガード %</label>
+      <input type="number" id="allGuard" value="0" min="0">
+    </div>
+  </section>
 
-      <!-- ④その他補正 -->
-      <section>
-        <h2>④ その他補正 %</h2>
-        <div class="col-hd"><span></span><span>ATK</span><span>DEF</span></div>
-        <div class="r2">
-          <label>リンク</label>
-          <input type="number" id="linkAtk" value="0">
-          <input type="number" id="linkDef" value="0">
-        </div>
-        <div class="r2">
-          <label>アクティブ</label>
-          <input type="number" id="activeAtk" value="0">
-          <input type="number" id="activeDef" value="0">
-        </div>
-        <div class="r2">
-          <label>フィールド</label>
-          <input type="number" id="fieldAtk" value="0">
-          <input type="number" id="fieldDef" value="0">
-        </div>
-        <div class="r2">
-          <label>Sメモリー</label>
-          <input type="number" id="memAtk" value="0">
-          <input type="number" id="memDef" value="0">
-        </div>
-        <div class="r2">
-          <label>アイテム</label>
-          <input type="number" id="itemAtk" value="0">
-          <input type="number" id="itemDef" value="0">
-        </div>
-      </section>
-
-      <!-- ⑤必殺技 -->
-      <section>
-        <h2>⑤ 必殺技</h2>
-        <div class="r1">
-          <label>気力補正</label>
-          <select id="kiBonus">
-            <option value="2"   selected>×2.0</option>
-            <option value="1.8">×1.8</option>
-            <option value="1.7">×1.7</option>
-            <option value="1.6">×1.6</option>
-            <option value="1.5">×1.5</option>
-          </select>
-        </div>
-        <div class="r1">
-          <label>必殺技倍率</label>
-          <select id="suprRate">
-            <option value="8.4">8.4 lv20究極</option>
-            <option value="6.3">6.3 lv15超絶特大</option>
-            <option value="6.2">6.2 lv25超極大</option>
-            <option value="5.7" selected>5.7 lv20超極大</option>
-            <option value="5.05">5.05 lv10超絶特大</option>
-            <option value="4.5">4.5 lv25極大</option>
-            <option value="4.25">4.25 lv20極大</option>
-          </select>
-        </div>
-        <h3>必殺技効果 %（加算）</h3>
-        <div class="col-hd-eff"><span></span><span>ATK%</span><span></span><span>回数</span><span>DEF%</span></div>
-        <div class="r-eff">
-          <label>①</label>
-          <input type="number" id="suprEff1Pct" value="0" min="0">
-          <span class="x-mark">×</span>
-          <input type="number" id="suprEff1Cnt" value="1" min="0">
-          <input type="number" id="suprEff1DefPct" value="0" min="0">
-        </div>
-        <div class="r-eff">
-          <label>②</label>
-          <input type="number" id="suprEff2Pct" value="0" min="0">
-          <span class="x-mark">×</span>
-          <input type="number" id="suprEff2Cnt" value="1" min="0">
-          <input type="number" id="suprEff2DefPct" value="0" min="0">
-        </div>
-        <div class="r-eff">
-          <label>③</label>
-          <input type="number" id="suprEff3Pct" value="0" min="0">
-          <span class="x-mark" style="visibility:hidden">×</span>
-          <span class="no-def">—</span>
-          <input type="number" id="suprEff3DefPct" value="0" min="0">
-        </div>
-        <div class="r1">
-          <label>必殺技威力 %</label>
-          <input type="number" id="suprPower" value="0">
-        </div>
-      </section>
-
-      <!-- ⑥DEF関連 -->
-      <section>
-        <h2>⑥ DEF関連</h2>
-        <div class="r1">
-          <label>軽減率 %</label>
-          <input type="number" id="mitigation" value="0" min="0" max="100">
-        </div>
-        <div class="r1">
-          <label>全属性ガード %</label>
-          <input type="number" id="allGuard" value="0" min="0">
-        </div>
-      </section>
-
-      <div class="btn-row">
-        <button id="calcBtn" onclick="calc()">計算する</button>
-        <button id="resetBtn" onclick="resetAll()">リセット</button>
-      </div>
-
-      <div id="result">
-        <h2>計算結果</h2>
-        <div class="result-grid">
-          <div class="result-item">
-            <div class="result-label">必殺技ATK</div>
-            <div class="result-value atk" id="resSuprAtk">---</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">行動前DEF</div>
-            <div class="result-value def" id="resEffDef">---</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">行動後DEF</div>
-            <div class="result-value def" id="resAftDef">---</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">完封ライン</div>
-            <div class="result-value def" id="resSealLine">---</div>
-          </div>
-        </div>
-      </div>
-
+  <div class="btn-row">
+    <button id="calcBtn" onclick="calc()">計算する</button>
+    <button id="resetBtn" onclick="resetAll()">リセット</button>
   </div>
+
+  <div id="result">
+    <h2>計算結果</h2>
+    <div class="result-grid">
+      <div class="result-item">
+        <div class="result-label">必殺技ATK</div>
+        <div class="result-value atk" id="resSuprAtk">---</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">完封ライン</div>
+        <div class="result-value def" id="resSealLine">---</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">行動前DEF</div>
+        <div class="result-value def" id="resEffDef">---</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">行動後DEF</div>
+        <div class="result-value def" id="resAftDef">---</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -440,13 +378,10 @@
                        * (1 + n('memDef')    / 100)
                        * (1 + n('itemDef')   / 100);
 
-    // 気力補正はセレクト値がそのままの倍率
-    const kiBonusMult   = parseFloat(document.getElementById('kiBonus').value) || 1;
-    // 必殺技効果ATK合計 = ①%×回数 + ②%×回数 + ③%（%単位）
+    const kiBonusMult = parseFloat(document.getElementById('kiBonus').value) || 1;
     const effAtkTotal = n('suprEff1Pct') * n('suprEff1Cnt')
                       + n('suprEff2Pct') * n('suprEff2Cnt')
                       + n('suprEff3Pct');
-    // 必殺技倍率はそのままの倍率（5.7など）、効果・威力は%を倍率に変換して加算
     const suprRate    = parseFloat(document.getElementById('suprRate').value) || 1;
     const suprFinalMult = suprRate + (effAtkTotal + n('suprPower')) / 100;
 
@@ -454,17 +389,14 @@
       * leaderAtkMult * passAAtkMult * passBAllAtkMult
       * otherAtkMult * kiBonusMult * suprFinalMult;
 
-    // 必殺技効果DEF合計（①②のみ＝行動前、①②③全部＝行動後）
     const effDef12 = n('suprEff1DefPct') * n('suprEff1Cnt')
                    + n('suprEff2DefPct') * n('suprEff2Cnt');
     const effDef123 = effDef12 + n('suprEff3DefPct');
 
-    // 行動前DEF（パッシブB被弾時のみ、必殺技効果①②）
     const effDef = baseDef
       * leaderDefMult * passADefMult * passBHitDefMult
       * otherDefMult * (1 + effDef12 / 100);
 
-    // 行動後DEF（パッシブB全部、必殺技効果①②③）
     const aftDef = baseDef
       * leaderDefMult * passADefMult * passBAllDefMult
       * otherDefMult * (1 + effDef123 / 100);
@@ -479,7 +411,6 @@
     document.getElementById('resSealLine').textContent = sealLine === Infinity ? '∞' : fmt(sealLine);
   }
 
-  // 各IDのデフォルト値（セレクトは最初のoption、入力欄は0、一部例外）
   const DEFAULTS = { suprRate: '5.7', kiBonus: '2', leaderAtk: '220', leaderDef: '220', friendAtk: '220', friendDef: '220', suprEff1Cnt: '1', suprEff2Cnt: '1' };
 
   function resetAll() {
