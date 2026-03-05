@@ -105,19 +105,12 @@
     .r-eff label { font-size: 0.76em; text-align: center; }
     .x-mark { text-align: center; font-size: 0.76em; color: #aaa; }
 
-    .btn-row { display: flex; gap: 6px; margin-bottom: 5px; }
-    button#calcBtn {
-      flex: 1; padding: 9px;
-      background: #c00; color: #fff; border: none;
-      border-radius: 5px; font-size: 0.95em; font-weight: bold;
-      cursor: pointer;
-    }
-    button#calcBtn:active { background: #a00; }
     button#resetBtn {
-      padding: 9px 12px;
+      display: block; width: 100%; margin-top: 8px;
+      padding: 8px;
       background: #888; color: #fff; border: none;
       border-radius: 5px; font-size: 0.85em; font-weight: bold;
-      cursor: pointer; white-space: nowrap;
+      cursor: pointer;
     }
     button#resetBtn:active { background: #555; }
 
@@ -277,11 +270,6 @@
     </div>
   </section>
 
-  <div class="btn-row">
-    <button id="calcBtn" onclick="calc()">計算する</button>
-    <button id="resetBtn" onclick="resetAll()">リセット</button>
-  </div>
-
   <div id="result">
     <h2>計算結果</h2>
     <div class="result-grid">
@@ -302,6 +290,7 @@
         <div class="result-value def" id="resAftDef">---</div>
       </div>
     </div>
+    <button id="resetBtn" onclick="resetAll()">リセット</button>
   </div>
 
 </div>
@@ -348,8 +337,8 @@
 
   INPUT_IDS.forEach(id => {
     const el = document.getElementById(id);
-    el.addEventListener('input',  saveAll);
-    el.addEventListener('change', saveAll);
+    el.addEventListener('input',  () => { saveAll(); calc(); });
+    el.addEventListener('change', () => { saveAll(); calc(); });
   });
 
   function calc() {
@@ -421,7 +410,7 @@
     saveAll();
   }
 
-  window.onload = loadAll;
+  window.onload = () => { loadAll(); calc(); };
 </script>
 </body>
 </html>
