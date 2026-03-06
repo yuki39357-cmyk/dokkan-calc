@@ -17,17 +17,24 @@
     .container { max-width: 480px; margin: 0 auto; }
 
     section {
+      display: flex;
+      gap: 4px;
       background: #fff;
       border-radius: 5px;
-      padding: 3px 7px 3px;
+      padding: 3px 7px 3px 4px;
       margin-bottom: 3px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
-    h2 {
-      font-size: 0.75em; font-weight: bold;
-      margin-bottom: 2px; padding-bottom: 1px;
-      border-bottom: 1.5px solid #e0e0e0; color: #333;
+    .sec-title {
+      writing-mode: vertical-rl;
+      font-size: 0.6em;
+      color: #bbb;
+      font-weight: bold;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.05em;
     }
+    .sec-body { flex: 1; min-width: 0; }
     .sep { border: none; border-top: 1px dashed #ddd; margin: 2px 0; }
 
     .r2 {
@@ -117,93 +124,100 @@
 
   <!-- 基礎 + リーダー -->
   <section>
-    <h2>基礎ステータス・リーダースキル %</h2>
-    <div class="r2" style="margin-bottom:1px;">
-      <span></span>
-      <span style="font-size:0.68em;color:#c77;text-align:center;font-weight:bold;">ATK</span>
-      <span style="font-size:0.68em;color:#77c;text-align:center;font-weight:bold;">DEF</span>
-    </div>
-    <div class="r2"><label>基礎</label>
-      <input type="text" inputmode="numeric" id="baseAtk" min="0" class="ai">
-      <input type="text" inputmode="numeric" id="baseDef" min="0" class="di">
-    </div>
-    <div class="r2"><label>潜在</label>
-      <input type="text" inputmode="numeric" id="potAtk" min="0" class="ai">
-      <input type="text" inputmode="numeric" id="potDef" min="0" class="di">
-    </div>
-    <div class="r2"><label>スキル玉</label>
-      <input type="text" inputmode="numeric" id="ballAtk" min="0" class="ai">
-      <input type="text" inputmode="numeric" id="ballDef" min="0" class="di">
-    </div>
-    <hr class="sep">
-    <div class="r2"><label>自リーダー</label>
-      <select id="leaderAtk" class="ai"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
-      <select id="leaderDef" class="di"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
-    </div>
-    <div class="r2"><label>フレンド</label>
-      <select id="friendAtk" class="ai"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
-      <select id="friendDef" class="di"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+    <span class="sec-title">基礎・リーダー</span>
+    <div class="sec-body">
+      <div class="r2" style="margin-bottom:1px;">
+        <span></span>
+        <span style="font-size:0.68em;color:#c77;text-align:center;font-weight:bold;">ATK</span>
+        <span style="font-size:0.68em;color:#77c;text-align:center;font-weight:bold;">DEF</span>
+      </div>
+      <div class="r2"><label>基礎</label>
+        <input type="text" inputmode="numeric" id="baseAtk" class="ai">
+        <input type="text" inputmode="numeric" id="baseDef" class="di">
+      </div>
+      <div class="r2"><label>潜在</label>
+        <input type="text" inputmode="numeric" id="potAtk" class="ai">
+        <input type="text" inputmode="numeric" id="potDef" class="di">
+      </div>
+      <div class="r2"><label>スキル玉</label>
+        <input type="text" inputmode="numeric" id="ballAtk" class="ai">
+        <input type="text" inputmode="numeric" id="ballDef" class="di">
+      </div>
+      <hr class="sep">
+      <div class="r2"><label>自リーダー</label>
+        <select id="leaderAtk" class="ai"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+        <select id="leaderDef" class="di"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+      </div>
+      <div class="r2"><label>フレンド</label>
+        <select id="friendAtk" class="ai"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+        <select id="friendDef" class="di"><option value="220" selected>220</option><option value="200">200</option><option value="170">170</option></select>
+      </div>
     </div>
   </section>
 
   <!-- パッシブ -->
   <section>
-    <h2>パッシブ %</h2>
-    <div class="r2"><label>A①</label>
-      <input type="text" inputmode="numeric" id="passA1Atk" class="ai">
-      <input type="text" inputmode="numeric" id="passA1Def" class="di">
-    </div>
-    <div class="r2"><label>A②</label>
-      <input type="text" inputmode="numeric" id="passA2Atk" class="ai">
-      <input type="text" inputmode="numeric" id="passA2Def" class="di">
-    </div>
-    <div class="r2"><label>サポート</label>
-      <input type="text" inputmode="numeric" id="suppAtk" class="ai">
-      <input type="text" inputmode="numeric" id="suppDef" class="di">
-    </div>
-    <hr class="sep">
-    <div class="r2"><label>被弾時</label>
-      <input type="text" inputmode="numeric" id="hitAtk" class="ai">
-      <input type="text" inputmode="numeric" id="hitDef" class="di">
-    </div>
-    <div class="r2"><label>B①</label>
-      <input type="text" inputmode="numeric" id="passBAtk1" class="ai">
-      <input type="text" inputmode="numeric" id="passBDef1" class="di">
-    </div>
-    <div class="r2"><label>B②</label>
-      <input type="text" inputmode="numeric" id="passBAtk2" class="ai">
-      <input type="text" inputmode="numeric" id="passBDef2" class="di">
+    <span class="sec-title">パッシブ %</span>
+    <div class="sec-body">
+      <div class="r2"><label>A①</label>
+        <input type="text" inputmode="numeric" id="passA1Atk" class="ai">
+        <input type="text" inputmode="numeric" id="passA1Def" class="di">
+      </div>
+      <div class="r2"><label>A②</label>
+        <input type="text" inputmode="numeric" id="passA2Atk" class="ai">
+        <input type="text" inputmode="numeric" id="passA2Def" class="di">
+      </div>
+      <div class="r2"><label>サポート</label>
+        <input type="text" inputmode="numeric" id="suppAtk" class="ai">
+        <input type="text" inputmode="numeric" id="suppDef" class="di">
+      </div>
+      <hr class="sep">
+      <div class="r2"><label>被弾時</label>
+        <input type="text" inputmode="numeric" id="hitAtk" class="ai">
+        <input type="text" inputmode="numeric" id="hitDef" class="di">
+      </div>
+      <div class="r2"><label>B①</label>
+        <input type="text" inputmode="numeric" id="passBAtk1" class="ai">
+        <input type="text" inputmode="numeric" id="passBDef1" class="di">
+      </div>
+      <div class="r2"><label>B②</label>
+        <input type="text" inputmode="numeric" id="passBAtk2" class="ai">
+        <input type="text" inputmode="numeric" id="passBDef2" class="di">
+      </div>
     </div>
   </section>
 
   <!-- その他補正 -->
   <section>
-    <h2>その他補正 %</h2>
-    <div class="r2"><label>リンク</label>
-      <input type="text" inputmode="numeric" id="linkAtk" class="ai">
-      <input type="text" inputmode="numeric" id="linkDef" class="di">
-    </div>
-    <div class="r2"><label>アクティブ</label>
-      <input type="text" inputmode="numeric" id="activeAtk" class="ai">
-      <input type="text" inputmode="numeric" id="activeDef" class="di">
-    </div>
-    <div class="r2"><label>フィールド</label>
-      <input type="text" inputmode="numeric" id="fieldAtk" class="ai">
-      <input type="text" inputmode="numeric" id="fieldDef" class="di">
-    </div>
-    <div class="r2"><label>サポートメモリー</label>
-      <input type="text" inputmode="numeric" id="memAtk" class="ai">
-      <input type="text" inputmode="numeric" id="memDef" class="di">
-    </div>
-    <div class="r2"><label>アイテム</label>
-      <input type="text" inputmode="numeric" id="itemAtk" class="ai">
-      <input type="text" inputmode="numeric" id="itemDef" class="di">
+    <span class="sec-title">その他補正 %</span>
+    <div class="sec-body">
+      <div class="r2"><label>リンク</label>
+        <input type="text" inputmode="numeric" id="linkAtk" class="ai">
+        <input type="text" inputmode="numeric" id="linkDef" class="di">
+      </div>
+      <div class="r2"><label>アクティブ</label>
+        <input type="text" inputmode="numeric" id="activeAtk" class="ai">
+        <input type="text" inputmode="numeric" id="activeDef" class="di">
+      </div>
+      <div class="r2"><label>フィールド</label>
+        <input type="text" inputmode="numeric" id="fieldAtk" class="ai">
+        <input type="text" inputmode="numeric" id="fieldDef" class="di">
+      </div>
+      <div class="r2"><label>サポートメモリー</label>
+        <input type="text" inputmode="numeric" id="memAtk" class="ai">
+        <input type="text" inputmode="numeric" id="memDef" class="di">
+      </div>
+      <div class="r2"><label>アイテム</label>
+        <input type="text" inputmode="numeric" id="itemAtk" class="ai">
+        <input type="text" inputmode="numeric" id="itemDef" class="di">
+      </div>
     </div>
   </section>
 
   <!-- 必殺技 + DEF関連 -->
   <section>
-    <h2>必殺技・DEF関連</h2>
+    <span class="sec-title">必殺技・DEF</span>
+    <div class="sec-body">
     <div class="r1"><label>気力補正</label>
       <select id="kiBonus">
         <option value="2" selected>×2.0（LR24）</option>
@@ -258,6 +272,7 @@
     </div>
     <div class="r1"><label>必殺技威力UP</label>
       <input type="text" inputmode="numeric" id="suprPower" class="ai">
+    </div>
     </div>
   </section>
 
