@@ -296,6 +296,14 @@
         <div class="result-label">完封ライン（行動後）</div>
         <div class="result-value def" id="resSealAft">---</div>
       </div>
+      <div class="result-item">
+        <div class="result-label">50万耐えライン（行動前）</div>
+        <div class="result-value def" id="resSeal50Eff">---</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">50万耐えライン（行動後）</div>
+        <div class="result-value def" id="resSeal50Aft">---</div>
+      </div>
     </div>
     <button id="resetBtn" onclick="resetAll()">リセット</button>
   </div>
@@ -373,14 +381,12 @@
     const otherAtkMult = (1 + n('linkAtk')  / 100)
                        * (1 + n('activeAtk') / 100)
                        * (1 + n('fieldAtk')  / 100)
-                       * (1 + n('memAtk')    / 100)
-                       * (1 + n('itemAtk')   / 100);
+                       * (1 + (n('memAtk') + n('itemAtk')) / 100);
 
     const otherDefMult = (1 + n('linkDef')  / 100)
                        * (1 + n('activeDef') / 100)
                        * (1 + n('fieldDef')  / 100)
-                       * (1 + n('memDef')    / 100)
-                       * (1 + n('itemDef')   / 100);
+                       * (1 + (n('memDef') + n('itemDef')) / 100);
 
     const kiBonusMult = parseFloat(document.getElementById('kiBonus').value) || 1;
     const effAtkTotal = n('suprEff1Pct') * n('suprEff1Cnt')
@@ -408,18 +414,22 @@
     const mit = 1 - n('mitigation') / 100;
     const hasGuard = document.getElementById('allGuard').value === '1';
 
-    function calcSeal(def) {
-      if (mit === 0) return Infinity;
-      return hasGuard ? def / (mit * 0.8) : def / mit;
+    function calcSeal(def, dmg) {
+      if (mit <= 0) return Infinity;
+      return hasGuard ? (def + dmg * 2) / (0.8 * mit) : (def + dmg) / mit;
     }
-    const sealEff = calcSeal(effDef);
-    const sealAft = calcSeal(aftDef);
+    const sealEff   = calcSeal(effDef, 0);
+    const sealAft   = calcSeal(aftDef, 0);
+    const seal50Eff = calcSeal(effDef, 500000);
+    const seal50Aft = calcSeal(aftDef, 500000);
 
-    document.getElementById('resSuprAtk').textContent  = fmt(suprAtk);
-    document.getElementById('resEffDef').textContent   = fmt(effDef);
-    document.getElementById('resAftDef').textContent   = fmt(aftDef);
-    document.getElementById('resSealEff').textContent  = sealEff === Infinity ? '∞' : fmt(sealEff);
-    document.getElementById('resSealAft').textContent  = sealAft === Infinity ? '∞' : fmt(sealAft);
+    document.getElementById('resSuprAtk').textContent   = fmt(suprAtk);
+    document.getElementById('resEffDef').textContent    = fmt(effDef);
+    document.getElementById('resAftDef').textContent    = fmt(aftDef);
+    document.getElementById('resSealEff').textContent   = sealEff   === Infinity ? '∞' : fmt(sealEff);
+    document.getElementById('resSealAft').textContent   = sealAft   === Infinity ? '∞' : fmt(sealAft);
+    document.getElementById('resSeal50Eff').textContent = seal50Eff === Infinity ? '∞' : fmt(seal50Eff);
+    document.getElementById('resSeal50Aft').textContent = seal50Aft === Infinity ? '∞' : fmt(seal50Aft);
   }
 
   const DEFAULTS = { suprRate: '5.7', kiBonus: '2', leaderAtk: '220', leaderDef: '220', friendAtk: '220', friendDef: '220', suprEff1Cnt: '1', suprEff2Cnt: '1', allGuard: '0' };
