@@ -27,7 +27,7 @@
     }
     .sec-title {
       writing-mode: vertical-rl;
-      font-size: 0.6em;
+      font-size: 0.72em;
       color: #bbb;
       font-weight: bold;
       white-space: nowrap;
@@ -108,8 +108,9 @@
     }
     button#resetBtn:active { background: #555; }
 
-    #result { background: #fff; border-radius: 5px; padding: 3px 7px 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-    #result h2 { font-size: 0.65em; color: #c00; border-bottom-color: #fcc; margin-bottom: 1px; padding-bottom: 1px; }
+    #result { display: flex; gap: 4px; background: #fff; border-radius: 5px; padding: 3px 7px 5px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+    #result .sec-title { color: #c00; }
+    .result-body { flex: 1; min-width: 0; }
     .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3px; }
     .result-item { background: #f9f9f9; border-radius: 4px; padding: 3px 5px; }
     .result-label { font-size: 0.6em; color: #777; margin-bottom: 0; }
@@ -277,7 +278,8 @@
   </section>
 
   <div id="result">
-    <h2>計算結果</h2>
+    <span class="sec-title">計算結果</span>
+    <div class="result-body">
     <div class="result-grid">
       <div class="result-item" style="grid-column: 1 / -1;">
         <div class="result-label">必殺技ATK</div>
@@ -321,6 +323,7 @@
       </div>
     </div>
     <button id="resetBtn" onclick="resetAll()">リセット</button>
+    </div>
   </div>
 
 </div>
