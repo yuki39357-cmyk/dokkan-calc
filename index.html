@@ -406,6 +406,32 @@
     calc();
   }
 
+  function renameTab(index) {
+    const current = localStorage.getItem(`dokkanCalcTabName_${index}`) || `タブ${index + 1}`;
+    const name = prompt('タブ名を入力してください', current);
+    if (name === null) return;
+    const displayName = name.trim() || `タブ${index + 1}`;
+    localStorage.setItem(`dokkanCalcTabName_${index}`, displayName);
+    document.querySelectorAll('.tab')[index].textContent = displayName;
+  }
+
+  function loadTabNames() {
+    document.querySelectorAll('.tab').forEach((btn, i) => {
+      const name = localStorage.getItem(`dokkanCalcTabName_${i}`);
+      if (name) btn.textContent = name;
+    });
+  }
+
+  function setupTabRename(btn, index) {
+    let pressTimer;
+    btn.addEventListener('touchstart', () => {
+      pressTimer = setTimeout(() => renameTab(index), 600);
+    }, { passive: true });
+    btn.addEventListener('touchend',  () => clearTimeout(pressTimer));
+    btn.addEventListener('touchmove', () => clearTimeout(pressTimer));
+    btn.addEventListener('dblclick',  () => renameTab(index));
+  }
+
   INPUT_IDS.forEach(id => {
     const el = document.getElementById(id);
     el.addEventListener('input',  () => { saveAll(); calc(); });
@@ -511,7 +537,11 @@
       localStorage.setItem('dokkanCalc_0', old);
     }
     currentTab = parseInt(localStorage.getItem('dokkanCalcTab') || '0');
-    document.querySelectorAll('.tab').forEach((btn, i) => btn.classList.toggle('active', i === currentTab));
+    document.querySelectorAll('.tab').forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentTab);
+      setupTabRename(btn, i);
+    });
+    loadTabNames();
     loadAll();
     calc();
   };
