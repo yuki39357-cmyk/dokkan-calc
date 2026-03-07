@@ -465,7 +465,7 @@
                       + n('suprEff2Pct') * n('suprEff2Cnt')
                       + n('suprEff3Pct');
     const suprRate = parseFloat(document.getElementById('suprRate').value) || 1;
-    const suprAtk = Math.round(atk * (suprRate + (effAtkTotal + n('suprPower')) / 100));
+    const suprAtk = Math.round(atk * (suprRate + effAtkTotal / 100 + n('suprPower') * 0.05));
 
     const effDef12  = n('suprEff1DefPct') * n('suprEff1Cnt') + n('suprEff2DefPct') * n('suprEff2Cnt');
     const effDef123 = effDef12 + n('suprEff3DefPct');
