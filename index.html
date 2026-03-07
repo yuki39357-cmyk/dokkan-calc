@@ -433,13 +433,13 @@
     atk    = fl(atk    * (1 + n('fieldAtk') / 100));
     defBase = fl(defBase * (1 + n('fieldDef') / 100));
 
-    // ④パッシブスキル（DEFはここで行動前/後に分岐）
-    atk = fl(atk * (1 + n('passA1Atk') / 100 + n('passA2Atk') / 100 + n('suppAtk') / 100
-                      + n('hitAtk') / 100 + n('passBAtk1') / 100 + n('passBAtk2') / 100));
-    let defEff = fl(defBase * (1 + n('passA1Def') / 100 + n('passA2Def') / 100 + n('suppDef') / 100
-                                 + n('hitDef') / 100));
-    let defAft = fl(defBase * (1 + n('passA1Def') / 100 + n('passA2Def') / 100 + n('suppDef') / 100
-                                 + n('hitDef') / 100 + n('passBDef1') / 100 + n('passBDef2') / 100));
+    // ④パッシブスキル（A系とB系を別乗算、DEFはここで行動前/後に分岐）
+    atk = fl(atk * (1 + n('passA1Atk') / 100 + n('passA2Atk') / 100 + n('suppAtk') / 100));
+    atk = fl(atk * (1 + n('hitAtk') / 100 + n('passBAtk1') / 100 + n('passBAtk2') / 100));
+    let defEff = fl(defBase * (1 + n('passA1Def') / 100 + n('passA2Def') / 100 + n('suppDef') / 100));
+    defEff = fl(defEff * (1 + n('hitDef') / 100));
+    let defAft = fl(defBase * (1 + n('passA1Def') / 100 + n('passA2Def') / 100 + n('suppDef') / 100));
+    defAft = fl(defAft * (1 + n('hitDef') / 100 + n('passBDef1') / 100 + n('passBDef2') / 100));
 
     // ⑤サポートメモリー＆アイテム
     atk    = fl(atk    * (1 + (n('memAtk') + n('itemAtk')) / 100));
