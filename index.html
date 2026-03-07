@@ -123,13 +123,12 @@
     .eff-rows { flex: 1; }
     .r-eff {
       display: grid;
-      grid-template-columns: 14px 56px 56px 14px 36px 18px;
-      justify-content: end;
+      grid-template-columns: auto 56px 56px 14px 36px 18px;
       align-items: center;
       gap: 3px;
       margin-bottom: 1px;
     }
-    .r-eff label { font-size: 0.76em; text-align: center; }
+    .r-eff label { font-size: 0.76em; white-space: nowrap; }
 
     button#resetBtn {
       display: block; width: 100%; margin-top: 3px;
