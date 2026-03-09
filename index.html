@@ -137,6 +137,7 @@
       margin-bottom: 1px;
     }
     .r-eff label { font-size: 0.76em; white-space: nowrap; }
+    .x-mark { font-size: 0.75em; color: #888; text-align: center; }
 
     button#resetBtn {
       display: block; width: 100%; margin-top: 3px;
@@ -460,21 +461,23 @@
     } catch(e) {}
   }
 
-  function switchTab(n) {
+  function switchTab(idx) {
     saveAll();
-    currentTab = n;
-    localStorage.setItem('dokkanCalcTab', n);
-    document.querySelectorAll('.tab').forEach((btn, i) => btn.classList.toggle('active', i === n));
+    currentTab = idx;
+    localStorage.setItem('dokkanCalcTab', idx);
+    document.querySelectorAll('.tab').forEach((btn, i) => btn.classList.toggle('active', i === idx));
     loadAll();
     syncGuardButtons();
     calc();
   }
 
+  let helpLoaded = false;
   function openHelp() {
     document.getElementById('helpModal').style.display = 'flex';
+    if (helpLoaded) return;
     fetch('help.html')
       .then(r => r.text())
-      .then(html => { document.getElementById('helpContent').innerHTML = html; })
+      .then(html => { document.getElementById('helpContent').innerHTML = html; helpLoaded = true; })
       .catch(() => { document.getElementById('helpContent').textContent = '読み込みに失敗しました'; });
   }
 
@@ -520,8 +523,8 @@
 
   INPUT_IDS.forEach(id => {
     const el = document.getElementById(id);
-    el.addEventListener('input',  () => { saveAll(); calc(); });
-    el.addEventListener('change', () => { saveAll(); calc(); });
+    const handler = () => { saveAll(); calc(); };
+    el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', handler);
     if (el.tagName === 'INPUT') {
       el.addEventListener('focus', () => {
         setTimeout(() => {
@@ -571,14 +574,13 @@
     defAft = fl(defAft * (1 + n('linkDef') / 100));
 
     // ⑧気力ボーナス（ATKのみ）
-    const kiBonusMult = parseFloat(document.getElementById('kiBonus').value) || 1;
-    atk = fl(atk * kiBonusMult);
+    atk = fl(atk * (n('kiBonus') || 1));
 
     // ⑨必殺技＆追加効果（四捨五入）
     const effAtkTotal = n('suprEff1Pct') * n('suprEff1Cnt')
                       + n('suprEff2Pct') * n('suprEff2Cnt')
                       + n('suprEff3Pct');
-    const suprRate = parseFloat(document.getElementById('suprRate').value) || 1;
+    const suprRate = n('suprRate') || 1;
     const suprAtk = Math.round(atk * (suprRate + effAtkTotal / 100 + n('suprPower') * 0.05));
 
     const effDef12  = n('suprEff1DefPct') * n('suprEff1Cnt') + n('suprEff2DefPct') * n('suprEff2Cnt');
